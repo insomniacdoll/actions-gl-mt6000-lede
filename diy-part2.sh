@@ -16,16 +16,6 @@ sed -i 's/192.168.1.1/192.168.88.1/g' package/base-files/files/bin/config_genera
 # Add a fallback when the HAProxy origin is unreachable from Actions runners.
 sed -i '/^PKG_SOURCE_URL:=/a PKG_SOURCE_URL+=https://distfiles.alpinelinux.org/distfiles/v3.23' feeds/packages/net/haproxy/Makefile
 
-# Linux 6.12.114 backported the netns_local -> netns_immutable rename.
-# Keep the old field for earlier 6.12 releases and for Linux 6.13/6.14.
-sed -i 's/^+#if LINUX_VERSION_IS_GEQ(6,15,0)$/+#if LINUX_VERSION_IS_GEQ(6,15,0) || LINUX_VERSION_IN_RANGE(6,12,114, 6,13,0)/' \
-  package/kernel/mac80211/patches/build/210-wireless_netns_local_backport.patch
-
-# Modify ustream-ssl
-echo 'start modify ustream-ssl Makefile'
-sed -i 's/e251189ed315f22ab63dc6f17b03178676e10c21fff0cdd863b294a3c51a1b5b/c48331dcfda73d16cb12a0aa069eb62a5c370428c7559011a7284a9ef67d3089/g' package/libs/ustream-ssl/Makefile
-echo 'modify ustream-ssl Makefile OK'
-
 # Modify naiveproxy
 # echo 'start modify naiveproxy Makefile'
 # sed -i 's/9bda77ac7c551e1fd33b2db21cc235e4d2e35c414655018f53e0d419ac2b46d1/e5eec05d7e799c4b6f93adb02129246142a88e427d76d6275a0312872031a1db/g' feeds/small/naiveproxy/Makefile
